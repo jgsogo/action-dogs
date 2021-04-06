@@ -4,7 +4,11 @@ import { generate } from './doggo/generator'
 ;(async function run(): Promise<void> {
   try {
     const ctx = github.context
-    if (!ctx.payload.pull_request) {
+    var issue_number = core.getInput('issue-number')
+    if (!issue_number) {
+      issue_number = ctx.payload.pull_request
+    }
+    if (!issue_number) {
       throw new Error('Not in the context of a PR!')
     }
 
@@ -12,7 +16,7 @@ import { generate } from './doggo/generator'
     const doggo = generate()
     ghCli.issues.createComment({
       ...ctx.repo,
-      issue_number: ctx.payload.pull_request.number, // eslint-disable-line @typescript-eslint/camelcase
+      issue_number: issue_number, // eslint-disable-line @typescript-eslint/camelcase
       body: `![Doggo](${doggo})`
     })
   } catch (e) {
