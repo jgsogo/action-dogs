@@ -8,6 +8,9 @@ inputs:
   github-token:
     description: 'Pass in secrets.GITHUB_TOKEN'
     required: true
+  issue-number:
+    description: 'Issue number (if not in PR context)'
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
